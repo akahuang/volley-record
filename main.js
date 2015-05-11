@@ -1,58 +1,49 @@
 var ctx, color = "#000";
 
 // setup a new canvas for drawing wait for device init
-document.addEventListener("DOMContentLoaded", function(){
-    setTimeout(newCanvas, 1000);
-}, false);
+$(document).ready(function() {
+  var canvas = document.getElementById("canvas");
+  var content = document.getElementById("content");
+  canvas.width = content.offsetWidth;
+  canvas.height = content.offsetHeight;
+  console.log(canvas.width, canvas.height);
+});
 
 // function to setup a new canvas for drawing
 function newCanvas(){
     //define and resize canvas
     document.getElementById("content").style.height = window.innerHeight-90;
-    var canvas = '<canvas id="canvas" width="'+window.innerWidth+'" height="'+(window.innerHeight-90)+'"></canvas>';
-    document.getElementById("content").innerHTML = canvas;
+    document.getElementById("canvas").style.height = window.innerHeight-90;
+    document.getElementById("tmp_canvas").style.height = window.innerHeight-90;
 
     // setup canvas
-    ctx=document.getElementById("canvas").getContext("2d");
+    ctx=document.getElementById("tmp_canvas").getContext("2d");
     ctx.strokeStyle = color;
     ctx.lineWidth = 5;
 
     // setup to trigger drawing on mouse or touch
-    drawTouch();
-    drawPointer();
+//    drawTouch();
     drawMouse();
 }
 
-function selectColor(el){
-    for(var i=0;i<document.getElementsByClassName("palette").length;i++){
-        document.getElementsByClassName("palette")[i].style.borderColor = "#777";
-        document.getElementsByClassName("palette")[i].style.borderStyle = "solid";
-    }
-    el.style.borderColor = "#fff";
-    el.style.borderStyle = "dashed";
-    color = window.getComputedStyle(el).backgroundColor;
-    ctx.beginPath();
-    ctx.strokeStyle = color;
-}
-
-// prototype to start drawing on touch using canvas moveTo and lineTo
-var drawTouch = function() {
-    var start = function(e) {
-        ctx.beginPath();
-        x = e.changedTouches[0].pageX;
-        y = e.changedTouches[0].pageY-44;
-        ctx.moveTo(x,y);
-    };
-    var move = function(e) {
-        e.preventDefault();
-        x = e.changedTouches[0].pageX;
-        y = e.changedTouches[0].pageY-44;
-        ctx.lineTo(x,y);
-        ctx.stroke();
-    };
-    document.getElementById("canvas").addEventListener("touchstart", start, false);
-    document.getElementById("canvas").addEventListener("touchmove", move, false);
-};
+// // prototype to start drawing on touch using canvas moveTo and lineTo
+// var drawTouch = function() {
+//     var start = function(e) {
+//         ctx.beginPath();
+//         x = e.changedTouches[0].pageX;
+//         y = e.changedTouches[0].pageY-44;
+//         ctx.moveTo(x,y);
+//     };
+//     var move = function(e) {
+//         e.preventDefault();
+//         x = e.changedTouches[0].pageX;
+//         y = e.changedTouches[0].pageY-44;
+//         ctx.lineTo(x,y);
+//         ctx.stroke();
+//     };
+//     document.getElementById("canvas").addEventListener("touchstart", start, false);
+//     document.getElementById("canvas").addEventListener("touchmove", move, false);
+// };
 
 // prototype to start drawing on mouse using canvas moveTo and lineTo
 var drawMouse = function() {

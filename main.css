@@ -73,9 +73,12 @@ body {
     overflow:hidden;
     background-color:#ddd;
 }
-#canvas{
-    cursor:crosshair ;
+.canvas{
+    cursor:crosshair;
     background-color:#fff;
+    position:absolute;
+    left:0px;
+    top:0px;
 }
 .palette-case {
     width:260px;

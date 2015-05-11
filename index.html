@@ -3,16 +3,44 @@
 <head>
 <title>Volley Record</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
-<link rel="stylesheet" type="text/css" href="main.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="main.css" /> -->
 <script src="main.js"></script>
+<style type="text/css">
+canvas{
+    cursor:crosshair;
+    background-color:#fff;
+    position:absolute;
+    height:100%;
+    width:100%;
+}
+</style>
 </head>
 <body>
+<div data-role="page">
+  <div data-role="header">
+    <h1>Welcome To My Homepage</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" id="content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div data-role="footer">
+    <h1>Footer Text</h1>
+  </div>
+</div>
+
+<!--
 <div id="page">
     <div class="header">
         <a id="new" class="navbtn" onclick="newCanvas()">New</a>
         <div class="title">Sketch Pad</div>
     </div>
-    <div id="content"><p style="text-align:center">Loading Canvas...</p></div>
+    <div id="content">
+    </div>
     <div class="footer">
         <div class="palette-case">
             <div class="palette-box">
@@ -34,5 +62,6 @@
         </div>
     </div>
 </div>
+-->
 </body>
 </html>
