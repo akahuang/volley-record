@@ -1,23 +1,25 @@
-var ctx, color = "#000";
 
 // setup a new canvas for drawing wait for device init
 $(document).ready(function() {
-  var canvas = document.getElementById("canvas");
-  var content = document.getElementById("content");
-  canvas.width = content.offsetWidth;
-  canvas.height = content.offsetHeight;
-  console.log(canvas.width, canvas.height);
+    // Set the height of canvas
+    var content_height = $.mobile.getScreenHeight() - $("#header").outerHeight();
+    $("#content").height(content_height);
+    $("#canvas").height(content_height);
+
+    // Stop scroll
+    $(document).delegate(".ui-content", "scrollstart", false);
 });
+
+var ctx, color = "#000";
 
 // function to setup a new canvas for drawing
 function newCanvas(){
     //define and resize canvas
     document.getElementById("content").style.height = window.innerHeight-90;
     document.getElementById("canvas").style.height = window.innerHeight-90;
-    document.getElementById("tmp_canvas").style.height = window.innerHeight-90;
 
     // setup canvas
-    ctx=document.getElementById("tmp_canvas").getContext("2d");
+    ctx=document.getElementById("canvas").getContext("2d");
     ctx.strokeStyle = color;
     ctx.lineWidth = 5;
 
