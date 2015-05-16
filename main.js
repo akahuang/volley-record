@@ -18,23 +18,23 @@ $(document).ready(function() {
     // Create a canvas as large as the content
     var canvas_html = '<canvas id="canvas" width="'+$(window).width()+'" height="'+content_height+'"></canvas>';
     $content.html(canvas_html);
-
-    // Set the event listener
-    drawTouch();
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext("2d");
+    image = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     // Draw the volley field
     drawField();
+
+    // Set the event listener
+    drawTouch();
 
 });
 
 // prototype to start drawing on touch using canvas moveTo and lineTo
 var drawTouch = function() {
-    canvas = document.getElementById("canvas");
-    ctx = canvas.getContext("2d");
-    image = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var start_point;
     var header_height = $("#header").outerHeight();
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1;
 
     var start = function(e) {
         e.preventDefault();
@@ -101,6 +101,7 @@ function drawField() {
 
     // green color inside
     ctx.fillStyle = '#1B3';
+    ctx.lineWidth = 2;
     ctx.fillRect(offset_x, offset_y, scale * 9, scale * 18);
 
     // Horizontal line
