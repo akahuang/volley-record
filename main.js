@@ -27,6 +27,7 @@ $(document).ready(function() {
 var drawTouch = function() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
+    var image = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var start_x, start_y;
     var header_height = $("#header").outerHeight();
     ctx.lineWidth = 2;
@@ -42,13 +43,18 @@ var drawTouch = function() {
         e.preventDefault();
         var x = e.changedTouches[0].pageX;
         var y = e.changedTouches[0].pageY - header_height;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.putImageData(image, 0, 0);
         ctx.beginPath();
         ctx.moveTo(start_x,start_y);
         ctx.lineTo(x,y);
         ctx.stroke();
     };
+    var end = function(e) {
+        e.preventDefault();
+        image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    }
     document.getElementById("canvas").addEventListener("touchstart", start, false);
     document.getElementById("canvas").addEventListener("touchmove", move, false);
+    document.getElementById("canvas").addEventListener("touchend", end, false);
 };
 
