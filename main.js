@@ -1,4 +1,5 @@
 var canvas, ctx, image;
+var scale, offset_x, offset_y;
 
 // setup a new canvas for drawing wait for device init
 $(document).ready(function() {
@@ -27,6 +28,8 @@ $(document).ready(function() {
 
     // Set the event listener
     drawTouch();
+
+    setupButton();
 
 });
 
@@ -78,9 +81,9 @@ function drawLine(p1, p2) {
 
 function drawField() {
     // Calculate the scale and the offset of the field
-    var scale = Math.min(canvas.width / 11, canvas.height / 20),
-        offset_x = (canvas.width - 9 * scale) / 2,
-        offset_y = (canvas.height - 18 * scale) / 2;
+    scale = Math.min(canvas.width / 11, canvas.height / 20);
+    offset_x = (canvas.width - 9 * scale) / 2;
+    offset_y = (canvas.height - 18 * scale) / 2;
     console.log(scale, offset_x, offset_y);
     function canvas2field(point) {
         return {
@@ -116,5 +119,24 @@ function drawField() {
         drawFieldLine({x:x_arr[i], y:0}, {x:x_arr[i], y:18});
     }
     saveImage();
+}
+
+var Player = function (number, isSetter) {
+    this.number = number;
+    this.isSetter = isSetter;
+}
+
+function setupButton() {
+    var positions = [{x:1,y:1},{x:1,y:5},{x:4,y:5},{x:7,y:5},{x:7,y:1},{x:4,y:1}];
+    var players = new Array(6);
+    for (var i = 0; i < 6; i++) {
+        players[i] = new Player(i + 1, i == 0);
+        var left = positions[i].x * scale + offset_x,
+            top = positions[i].y * scale + offset_y;
+        var button_html = '<button id="player' + i + '" style="left:' + left +'px; top:' + top + 'px;">' + (i+1) + '</button>';
+        console.log(button_html)
+        $("#content").append(button_html);
+    }
+
 }
 
