@@ -1,3 +1,7 @@
+/* TODO: refactor: canvas-related, data-related
+ *       add line to data
+ *       draw line after select player
+ */
 var canvas, ctx, image;
 var scale, offset_x, offset_y;
 
