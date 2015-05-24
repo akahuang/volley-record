@@ -1,6 +1,37 @@
 var canvas, ctx, image;
 var scale, offset_x, offset_y;
 
+var SELECT_STATE = 'select',
+    PLOT_STATE = 'plot';
+var state = SELECT_STATE;
+
+function setState(s) {
+    state = s;
+    updateButton();
+}
+
+var data = {
+    players: {}, // All players, Number -> Player
+    active_numbers: new Array(6), // Number of 6 players at the field
+    chosen_number: null, // The number of chosen player
+};
+
+var Player = function (number, isSetter) {
+    this.number = number;
+    this.isSetter = isSetter;
+    this.attackPaths = new Array();
+}
+
+var Point = function (x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+var Line = function (start, end) {
+    this.start = start;
+    this.end = end;
+}
+
 // setup a new canvas for drawing wait for device init
 $(document).ready(function() {
     // Stop scroll
@@ -29,6 +60,8 @@ $(document).ready(function() {
     // Set the event listener
     drawTouch();
 
+    // Set the players data and plot the buttons
+    generateTestData();
     setupButton();
 
 });
@@ -40,6 +73,9 @@ var drawTouch = function() {
     ctx.lineWidth = 1;
 
     var start = function(e) {
+        if (state != PLOT_STATE) {
+            return;
+        }
         e.preventDefault();
         console.log('start event', e);
         start_point = {
@@ -48,6 +84,9 @@ var drawTouch = function() {
         console.log('start:', start_point);
     };
     var move = function(e) {
+        if (state != PLOT_STATE) {
+            return;
+        }
         e.preventDefault();
         var point = {
             x : e.changedTouches[0].pageX,
@@ -56,8 +95,12 @@ var drawTouch = function() {
         drawLine(start_point, point);
     };
     var end = function(e) {
+        if (state != PLOT_STATE) {
+            return;
+        }
         e.preventDefault();
         saveImage();
+        setState(SELECT_STATE);
     }
     document.getElementById("canvas").addEventListener("touchstart", start, false);
     document.getElementById("canvas").addEventListener("touchmove", move, false);
@@ -121,22 +164,43 @@ function drawField() {
     saveImage();
 }
 
-var Player = function (number, isSetter) {
-    this.number = number;
-    this.isSetter = isSetter;
+var onButtonClick = function (elem) {
+    console.log('button click:', elem);
+    setState(PLOT_STATE);
+    var position = Number(elem.id.split('-')[1]);
+    console.log(position);
+    active_number = data.active_numbers[position];
 }
 
 function setupButton() {
     var positions = [{x:1,y:1},{x:1,y:5},{x:4,y:5},{x:7,y:5},{x:7,y:1},{x:4,y:1}];
-    var players = new Array(6);
     for (var i = 0; i < 6; i++) {
-        players[i] = new Player(i + 1, i == 0);
         var left = positions[i].x * scale + offset_x,
             top = positions[i].y * scale + offset_y;
-        var button_html = '<button id="player' + i + '" style="left:' + left +'px; top:' + top + 'px;">' + (i+1) + '</button>';
+        var button_html = '<button class="player-button" id="position-' + i + '" style="left:' + left +'px; top:' + top + 'px;" onclick="onButtonClick(this)"></button>';
         console.log(button_html)
         $("#content").append(button_html);
     }
-
+    updateButton();
 }
 
+function updateButton() {
+    // update the button string to number, hide/show by the state, color of setter
+    if (state == SELECT_STATE) {
+        for (var i = 0; i < 6; i++) {
+            var button = document.getElementById('position-' + i);
+            button.innerHTML= data.active_numbers[i];
+        }
+        $('.player-button').show();
+    } else {
+        $('.player-button').hide();
+    }
+}
+
+function generateTestData() {
+    var numbers = [1, 2, 3, 4, 5, 6];
+    for (var i = 0; i < 6; i++) {
+        data.players[numbers[i]] = new Player(numbers[i], i == 0 || i == 3);
+        data.active_numbers[i] = numbers[i];
+    }
+}
